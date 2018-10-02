@@ -61,7 +61,7 @@ class App extends Component {
             <p
               className={`${index === 0 && 'App-text-red'}  ${index === (count - 1) && 'App-text-green'}`}>
               {item.price}
-              </p>
+            </p>
           </Card>)
         )}
       </div>
