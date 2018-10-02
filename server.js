@@ -52,12 +52,13 @@ app.get('/products', async (req, res) => {
 
 app.get('/products/:productId/prices', async (req, res) => {
   const {productId} = req.params;
-  const productStore = {};
+  const productPrices = [];
 
   for (const store of validExchanges) {
-    productStore[store] = await getProductPrice(store, productId);
+    const price =  await getProductPrice(store, productId);
+    productPrices.push({store: store, price})
   }
-  res.send(productStore)
+  res.send(productPrices)
 });
 
 
@@ -70,5 +71,4 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
-
 app.listen(port, () => console.log(`Listening on port ${port}`));
