@@ -4,12 +4,11 @@
 
 ## Usage
 
-Install [nodemon](https://github.com/remy/nodemon) globally
+Install docker
 
-```
-npm i nodemon -g
-```
+Install docker-compose
 
+Run `docker-compose up`
 Install server and client dependencies
 
 ```
@@ -30,13 +29,5 @@ Running the production build on localhost. This will create a production build, 
 NODE_ENV=production yarn dev:server
 ```
 
-## How this works
 
-The key to use an Express backend with a project created with `create-react-app` is on using a **proxy**. We have a _proxy_ entry in `client/package.json`
-
-```
-"proxy": "http://localhost:5000/"
-```
-
-This tells Webpack development server to proxy our API requests to our API server, given that our Express server is running on **localhost:5000**
 
