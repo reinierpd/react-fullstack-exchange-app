@@ -7,31 +7,42 @@ import './App.css';
 
 class App extends Component {
   state = {
-    loading: false,
+    loadingProducts: false,
     products: [],
-    selectedOption: null
+    selectedOption: null,
+    selectedPrices: [],
+    loadingPrices: false
   };
 
   componentDidMount() {
-    this.setState({loading: true});
+    this.setState({loadingProducts: true});
     services.products()
-      .then(({products}) => this.setState({products, loading: false}))
+      .then(({products}) => this.setState({products, loadingProducts: false}))
       .catch((error) => {
         console.log(error);
-        this.setState({loading: false});
+        this.setState({loadingProducts: false});
       });
   }
 
   handleChange = (selectedOption) => {
-    this.setState({selectedOption});
+    this.setState({selectedOption, selectedPrices: [], loadingPrices: true});
     console.log(`Option selected:`, selectedOption);
-
+    services.allPrices(selectedOption.value)
+      .then(prices => {
+        console.log(prices);
+        const sorted = [...prices].sort((a, b) => a.price - b.price);
+        this.setState({selectedPrices: sorted, loadingPrices: false})
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setState({loadingPrices: false});
+      });
   };
 
   renderProducts() {
-    const {products, selectedOption} = this.state;
+    const {products, selectedOption, loadingProducts} = this.state;
     const options = products.map(({id}) => ({value: id, label: id}));
-    return this.state.loading ? <p>Loading...</p> :
+    return loadingProducts ? <p>Loading Products...</p> :
       <Select
         value={selectedOption}
         onChange={this.handleChange}
@@ -40,11 +51,20 @@ class App extends Component {
   }
 
   renderPrices() {
-    return <div className="App-row App-cards">
-      <Card title="Hi" price="21"/>
-      <Card title="Hi" price="21"/>
-      <Card title="Hi" price="21"/>
-    </div>
+    const {selectedPrices, loadingPrices} = this.state;
+    const count = selectedPrices.length;
+    return loadingPrices ? <p>Loading prices...</p> :
+      <div className="App-row App-cards">
+        {selectedPrices.map((item, index) => (
+          <Card key={item.store}>
+            <h4>{item.store}</h4>
+            <p
+              className={`${index === 0 && 'App-text-red'}  ${index === (count - 1) && 'App-text-green'}`}>
+              {item.price}
+              </p>
+          </Card>)
+        )}
+      </div>
   }
 
   render() {

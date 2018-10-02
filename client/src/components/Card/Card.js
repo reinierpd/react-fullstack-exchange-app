@@ -4,8 +4,7 @@ import './Card.css';
 const Card = (props)=>(
   <div className="Card-box">
     <div className="Card-container">
-      <h4>{props.title}</h4>
-      <p>{props.price}</p>
+      {props.children}
     </div>
   </div>
 );

@@ -50,3 +50,11 @@
     width: 800px;
     margin: auto;
 }
+
+.App-text-red {
+    color: red;
+}
+
+.App-text-green {
+    color: green;
+}
