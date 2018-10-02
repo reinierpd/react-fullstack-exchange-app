@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  react:
+    image: cripto-currency
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    command: ["tail", "-f", "/dev/null"]
+    ports:
+      - '3000:3000'
+      - '3001:3001'
+      - '5000:5000'
+    volumes:
+        - .:/usr/src/app
+    container_name: cripto-currency-exchange
